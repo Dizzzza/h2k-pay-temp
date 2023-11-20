@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Main - Crypto Acquiring</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <script src="https://unpkg.com/vue@2.6.14/dist/vue.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+</head>
+<body>
+    <nav class="bg-gray-800">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex h-16 items-center justify-between">
+                <a href="/" class=" text-white rounded-md">
+                    <img src="/assets/logo1.png" alt="logo" class="h-12 w-12">
+                </a>
+                <div class="flex items-center">
+                    <div class="hidden md:block">
+                        
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        
+                        <a href="/create"  class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Create Wallet</a>
+                        <a href="/wallets" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Wallets</a>
+                        <a href="/transactions" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium">Transactions</a>
+                        <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Documentory</a>
+                        <a href="/integration" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Integration</a>
+                    </div>
+                    </div>
+                </div>
+                <div>
+                    <button type="button" class=" inline-flex items-center justify-center  overflow-hidden focus:ring-4 w-10 h-10 focus:ring-gray-300 bg-gray-300 rounded-full dark:bg-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                        <span class="sr-only">Open user menu</span>
+                        <span class="font-medium text-gray-600 dark:text-gray-300"><%= user.firstname.charAt(0) + user.lastname.charAt(0)%></span>
+                    </button>
+                </div>
+                <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
+                    <div class="px-4 py-3" role="none">
+                        <p class="text-sm text-gray-900 dark:text-white" role="none">
+                            <%= user.firstname + " " + user.lastname%>
+                        </p>
+                        <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
+                            <%= user.email%>
+                        </p>
+                    </div>
+                    <ul class="py-1" role="none">
+                        <li>
+                            <a href="/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Settings</a>
+                        </li>
+                        <li>
+                            <form  action="/logout" method="post" id="sign_out_form"></form>
+                            <a href="/signup" onclick="onClickLogout()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</a>
+                        </li>
+                    </ul>
+                </div>
+            </div> 
+        </div>
+    </nav>
+
+        <% if (trans.length === 0) { %>
+            <p class="text-2xl text-gray-400 dark:text-gray-500">У вас нет кошельков</p>
+        <% } else { %>
+            <div class="relative overflow-x-auto">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                Order ID
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Client ID
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Merchant ID
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                summ
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                value
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                token
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Token ID
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Product
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Hash
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (let i = 0; i < trans.length; i++) { %> 
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <%= trans[i].id_order %>
+                                </th>
+                                <td class="px-6 py-4">
+                                    <%= trans[i].id_client %>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <%= trans[i].id_merchant %>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <%= trans[i].summ %>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <%= trans[i].value %>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <%= trans[i].token %>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <%= trans[i].token_id %>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <%= trans[i].product %>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <%= trans[i].hash %>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        <% } %>
+      
+        
+          <script>
+            console.log(wallets)
+            new Vue({
+                el: '#app',
+                data: {
+                    wallets: wallets,
+                    index: 0
+                },
+                methods: {
+                    nextSlide() {
+                        this.index += 1;
+                    },
+                    prev() {
+                        this.index -=1;
+                    }
+                }
+            })
+        
+            function onClickLogout() {
+                document.getElementById("sign_out_form").submit()
+            }
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+</html>

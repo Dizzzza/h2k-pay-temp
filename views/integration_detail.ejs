@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Integration - Crypto Acquiring</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://unpkg.com/vue@2.6.14/dist/vue.min.js"></script>
+</head>
+<body class="min-h-screen bg-gray-100">
+
+    <nav class="bg-gray-800">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex h-16 items-center justify-between">
+                <a href="/" class=" text-white rounded-md">
+                    <img src="/assets/logo1.png" alt="logo" class="h-12 w-12">
+                </a>
+                <div class="flex items-center">
+                    <div class="hidden md:block">
+                        
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        
+                        <a href="/create"  class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Create Wallet</a>
+                        <a href="/wallets" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Wallets</a>
+                        <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Transactions</a>
+                        <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Documentory</a>
+                        <a href="/integration" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" >Integration</a>
+                    </div>
+                    </div>
+                </div>
+                <div>
+                    <button type="button" class=" inline-flex items-center justify-center  overflow-hidden focus:ring-4 w-10 h-10 focus:ring-gray-300 bg-gray-300 rounded-full dark:bg-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                        <span class="sr-only">Open user menu</span>
+                        <span class="font-medium text-gray-600 dark:text-gray-300"><%= user.firstname.charAt(0) + user.lastname.charAt(0)%></span>
+                    </button>
+                </div>
+                <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
+                    <div class="px-4 py-3" role="none">
+                        <p class="text-sm text-gray-900 dark:text-white" role="none">
+                            <%= user.firstname + " " + user.lastname%>
+                        </p>
+                        <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
+                            <%= user.email%>
+                        </p>
+                    </div>
+                    <ul class="py-1" role="none">
+                        <li>
+                            <a href="/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Settings</a>
+                        </li>
+                        <li>
+                            <form  action="/logout" method="post" id="sign_out_form"></form>
+                            <a href="#" onclick="onClickLogout()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</a>
+                        </li>
+                    </ul>
+                </div>
+            </div> 
+        </div>
+    </nav>
+   
+
+
+<div id="app">
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="pt-16 p-4    mb-14 flex-grow">
+            <div class="mt-6">
+                <div class="bg-white p-4 rounded-md">
+                    <div class="px-4 sm:px-0">
+                        <h3 class="text-base font-semibold leading-7 text-gray-900">Integration Info</h3>
+                        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Integration details and info.</p>
+                    </div>
+                    <div class="mt-6 border-t border-gray-100">
+                        <dl class="divide-y divide-gray-100">
+                            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Project Name</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ integration.name }}</dd>
+                            </div>
+                            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Created by</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ user.firstname }}</dd>
+                            </div>
+                            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Website URL</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ integration.domain }}</dd>
+                            </div>
+                            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Webhook URL</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ integration.webhook }}</dd>
+                            </div>
+                            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Date Created</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ formattedDate }}</dd>
+                            </div>
+                            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Description</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ integration.description }}</dd>
+                            </div>
+                            <div class="px-4 pt-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">API Keys</dt>
+                                <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                    <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200">
+                                        <li class="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                                            <div class="flex w-0 flex-1 items-center">
+                                                <span class="pr-4">Integration API Key</span>
+                                                <input class="flex-grow block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 disabled max-w-xl focus:outline-none bg-gray-100 cursor-text" disabled v-model="integration.integration_key">
+                                                <button data-tooltip-target="tooltip-default" id="tooltip-button" type="button" class="ml-2 text-gray-900 bg-gray-100 hover:bg-gray-200 ring-1 ring-inset  ring-gray-300 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center dark:focus:ring-gray-500" @click="copyToClipboard(integration.integration_key)">
+                                                    <svg class="w-4 h-4" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="copy" role="img" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"> <path fill="currentColor" d="M272 0H396.1c12.7 0 24.9 5.1 33.9 14.1l67.9 67.9c9 9 14.1 21.2 14.1 33.9V336c0 26.5-21.5 48-48 48H272c-26.5 0-48-21.5-48-48V48c0-26.5 21.5-48 48-48zM48 128H192v64H64V448H256V416h64v48c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V176c0-26.5 21.5-48 48-48z"/></svg>
+                                                </button>
+                                                <div id="tooltip-default" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                                    Copy
+                                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                                            <div class="flex w-0 flex-1 items-center">
+                                                <span class="pr-4">Merchant Key</span>
+                                                <input class="flex-grow block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6 bg-gray-100 cursor-text max-w-xl" disabled v-model="user.uuid">
+                                                <button data-tooltip-target="tooltip-default2" type="button" class="ml-2 text-gray-900 bg-gray-100 hover:bg-gray-200 ring-1 ring-inset  ring-gray-300 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center dark:focus:ring-gray-500" @click="copyToClipboard(user.uuid)">
+                                                    <svg class="w-4 h-4" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="copy" role="img" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"> <path fill="currentColor" d="M272 0H396.1c12.7 0 24.9 5.1 33.9 14.1l67.9 67.9c9 9 14.1 21.2 14.1 33.9V336c0 26.5-21.5 48-48 48H272c-26.5 0-48-21.5-48-48V48c0-26.5 21.5-48 48-48zM48 128H192v64H64V448H256V416h64v48c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V176c0-26.5 21.5-48 48-48z"/></svg>
+                                                </button>
+                                                <div id="tooltip-default2" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                                    Copy
+                                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+                <div class="bg-white mt-4 rounded-md p-4">
+                    <div class="px-4 sm:px-0">
+                        <h3 class="text-base font-semibold leading-7 text-gray-900">Integration Code</h3>
+                        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Code Snippet for you.</p>
+                    </div>
+                    <div class="flex justify-center">
+                    <pre><code class="language-html">&lt;crypto-oris
+        api-key="<%= exact_integration.integration_key%>"
+        merchant-id="<%= user.uuid%>"
+        client-id="[ID of Client]"
+        order-id="[ID of Order/Transaction]"
+        network="<%= exact_integration.network.join('/') %>"
+        amount="[Order/Transaction Amount]"
+        token="[Token Name]"&gt;
+&lt;/crypto-orist&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            integration: JSON.parse('<%- JSON.stringify(exact_integration) %>'),
+            user: JSON.parse('<%- JSON.stringify(user) %>'),
+        },
+        methods: {
+            copyToClipboard(value) {
+                navigator.clipboard.writeText(value)
+            },
+        },
+        computed: {
+            formattedDate() {
+                const dt = new Date(this.integration.createdAt);
+                return dt.toLocaleString('ru-RU', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                });
+            },
+        }
+    });
+    function onClickLogout() {
+        document.getElementById("sign_out_form").submit();
+    }
+</script>
+
+</body>
+</html>

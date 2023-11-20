@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Main - Crypto Acquiring</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <script src="https://unpkg.com/vue@2.6.14/dist/vue.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+</head>
+<body class="min-h-screen bg-gray-100">
+    <nav class="bg-gray-800">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex h-16 items-center justify-between">
+                <a href="/" class=" text-white rounded-md">
+                    <img src="/assets/logo1.png" alt="logo" class="h-12 w-12">
+                </a>
+                <div class="flex items-center">
+                    <div class="hidden md:block">
+                        
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        
+                        <a href="/create"  class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Create Wallet</a>
+                        <a href="/wallets" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Wallets</a>
+                        <a href="/transactions" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Transactions</a>
+                        <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Documentory</a>
+                        <a href="/integration" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Integration</a>
+                    </div>
+                    </div>
+                </div>
+                <div>
+                    <button type="button" class=" inline-flex items-center justify-center  overflow-hidden focus:ring-4 w-10 h-10 focus:ring-gray-300 bg-gray-300 rounded-full dark:bg-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                        <span class="sr-only">Open user menu</span>
+                        <span class="font-medium text-gray-600 dark:text-gray-300"><%= user.firstname.charAt(0) + user.lastname.charAt(0)%></span>
+                    </button>
+                </div>
+                <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
+                    <div class="px-4 py-3" role="none">
+                        <p class="text-sm text-gray-900 dark:text-white" role="none">
+                            <%= user.firstname + " " + user.lastname%>
+                        </p>
+                        <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
+                            <%= user.email%>
+                        </p>
+                    </div>
+                    <ul class="py-1" role="none">
+                        <li>
+                            <a href="/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Settings</a>
+                        </li>
+                        <li>
+                            <form  action="/logout" method="post" id="sign_out_form"></form>
+                            <a href="/signup" onclick="onClickLogout()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</a>
+                        </li>
+                    </ul>
+                </div>
+            </div> 
+        </div>
+    </nav>
+  
+    <div class="relative isolate px-6 mt-14 lg:px-8">
+        <div class="mx-auto max-w-7xl sm:py-48 lg:py-56 flex flex-col-reverse lg:flex-row items-center justify-center">
+          <div class="lg:w-1/2 text-center mr-10">
+            <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-6xl">Cоздайте свой виджет для удобных криптовалютных платежей.</h1>
+            <p class="mt-6 text-lg leading-8 text-gray-600">Новые возможности с уникальным виджетом для вашего бизнеса.</p>
+            <div class="mt-10 flex-row items-center gap-x-6">
+              <a href="/integration" class="rounded-md bg-gray-800 mr-3 px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Создать интеграцию</a>
+              <div class="items-center mt-2 py-5">
+                <a href="#" class="text-sm font-bold leading-6 text-gray-900">Документация <span aria-hidden="true">→</span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+          <script>
+            console.log(wallets)
+            new Vue({
+                el: '#app',
+                data: {
+                    wallets: wallets,
+                    index: 0
+                },
+                methods: {
+                    nextSlide() {
+                        this.index += 1;
+                    },
+                    prev() {
+                        this.index -=1;
+                    }
+                }
+            })
+        
+            function onClickLogout() {
+                document.getElementById("sign_out_form").submit()
+            }
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+</html>

@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Create Wallet</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <script src="https://unpkg.com/vue@2.6.14/dist/vue.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+</head>
+<body class="min-h-screen bg-gray-100">
+    <nav class="bg-gray-800">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex h-16 items-center justify-between">
+                <a href="/" class=" text-white rounded-md">
+                    <img src="/assets/logo1.png" alt="logo" class="h-12 w-12">
+                </a>
+                <div class="flex items-center">
+                    <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="/create" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Create Wallet</a>
+                        <a href="/wallets" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Wallets</a>
+                        <a href="/transactions" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Transactions</a>
+                        <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Documentory</a>
+                        <a href="/integration" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Integration</a>
+                    </div>
+                    </div>
+                </div>
+                <div>
+                    <button type="button" class=" inline-flex items-center justify-center  overflow-hidden focus:ring-4 w-10 h-10 focus:ring-gray-300 bg-gray-300 rounded-full dark:bg-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                        <span class="sr-only">Open user menu</span>
+                        <span class="font-medium text-gray-600 dark:text-gray-300"><%= user.firstname.charAt(0) + user.lastname.charAt(0)%></span>
+                    </button>
+                </div>
+                <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
+                    <div class="px-4 py-3" role="none">
+                        <p class="text-sm text-gray-900 dark:text-white" role="none">
+                            <%= user.firstname + " " + user.lastname%>
+                        </p>
+                        <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
+                            <%= user.email%>
+                        </p>
+                    </div>
+                    <ul class="py-1" role="none">
+                        <li>
+                            <a href="/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Settings</a>
+                        </li>
+                        <li>
+                            <form  action="/logout" method="post" id="sign_out_form"></form>
+                            <a href="#" onclick="onClickLogout()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</a>
+                        </li>
+                    </ul>
+                </div>
+            </div> 
+        </div>
+    </nav>
+
+
+        <div class="relative isolate px-6 py-24 mt-14 lg:px-8 justify-between">
+                <div class="mx-auto max-w-7xl mb-10">
+                    <div class = "w-1/2">
+                        <h1 class="mt-10 text-center text-5xl font-bold leading-9 tracking-tight text-gray-900">Создание кошелька</h1>
+                    </div>
+                </div>
+            
+                <div class="mx-auto max-w-7xl" id="app">
+                    <form class="space-y-6 grid grid-cols-2 gap-4" action="/createWallet" method="POST">
+                        <!-- 1 -->
+                        <div>
+                            <label for="cryptoType" class="block mb-7 text-3xl font-medium text-center text-gray-900 dark:text-white">Выберите тип сети кошелька</label>
+                                        <div id="cryptoType" name="cryptoType" class=" justify-center flex mx-auto mb-4 text-center row">
+                                            <div class="col-md-3">
+                                            <div class="form-check mr-4">
+                                                <input
+                                                class="mb-3 px-2 w-4 h-4 py-2 form-check-input"
+                                                type="radio"
+                                                name="cryptoType"
+                                                value="BTC"
+                                                />
+                                                <label class="form-check-label"
+                                                ><img
+                                                    class="mx-auto flex min-h-full flex-col justify-center"
+                                                    src="../assets/BTC.png"
+                                                    width="40px"
+                                                />
+                                                Bitcoin (BTC)</label
+                                                >
+                                            </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                            <div class="form-check mr-4">
+                                                <input
+                                                class="mb-3 px-2 py-2 form-check-input"
+                                                type="radio"
+                                                name="cryptoType"
+                                                value="ETH"
+                                                />
+                                                <label class="form-check-label" for="gridRadios2"
+                                                ><img
+                                                    class="mx-auto flex min-h-full flex-col justify-center"
+                                                    src="../assets/eth.png"
+                                                    width="40px"
+                                                />
+                                                Ethereum (ETH)</label
+                                                >
+                                            </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                            <div class="form-check mr-4">
+                                                <input
+                                                class="mb-3 px-2 py-2 form-check-input"
+                                                type="radio"
+                                                name="cryptoType"
+                                                value="TRX"
+                                                />
+                                                <label class="form-check-label" for="gridRadios3"
+                                                ><img
+                                                    class="mx-auto flex min-h-full flex-col justify-center"
+                                                    src="../assets/trx.png"
+                                                    width="40px"
+                                                />
+                                                Tron (TRX)</label
+                                                >
+                                            </div>
+                                            </div>
+                                        </div>
+                            <div class="mb-2">
+                                <label for="walletName" class="block mb-2 text-lg text-center font-medium text-gray-800 dark:text-white">Wallet Name</label>
+                                <input type="text" name="walletName" id="walletName" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="First Wallet" required="">
+                            </div>
+                            <div class = "mb-5">
+                                <label for="walletSign" class="block mb-2 text-sm text-center font-medium text-gray-800 dark:text-white">Email</label>
+                                <input type="email" name="walletSign" id="walletSign" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="example@gmail.com" required="">
+                            </div>
+                            
+                            <div class="mb-4 flex">
+                                <label for="minSigns" class="w-1/3 mr-6 text-center text-xl font-medium text-gray-800 dark:text-white">Количество подписей:</label>
+                                <div class="w-2/3 mr-4">
+                                    <select name="minSigns" id="minSigns" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" v-if="codeArray.length > 0">
+                                        <option v-for="(option, index) in codeArray.length" :key="index">{{ index + 1 }}</option>
+                                    </select>
+                                    <p v-else class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">Только Ваша подпись</p>
+                                </div>
+                                <div class="mx-auto w-full sm:w-auto">
+                                    <button type="submit" class="flex w-full sm:w-auto rounded-md bg-gray-800 hover:bg-gray-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Create Wallet</button>
+                                </div>
+                            </div>
+                            
+                        </div>
+                
+                        <!-- 2 -->
+                        <div class="row-start-1 top-0">
+                            <div class = "mt-16">
+                                    
+                                <h1 class="text-center text-xl font-bold leading-9 tracking-tight text-gray-900">Добавить подписантов</h1>
+                    <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------>
+                                <div v-for="(code, index) in codeArray" :key="index" v-html="code"></div>
+                    
+                                <div class="flex justify-between align-middle">
+                                    <button type="button" @click="addCode" class="mt-2 text-white bg-gray-800 hover:bg-gray-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Добавить подписанта</button>
+                                    <button v-if="codeArray.length > 0" type="button" @click="deleteCode" class="text-white bg-gray-900 mt-2 hover:bg-gray-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Удалить подписанта</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+            </div>
+            
+        
+        <!---
+        <footer class="absolute bottom-0 left-0 z-20 w-full p-4 bg-white border-t border-gray-200 shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800 dark:border-gray-600">
+            <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="https://lab.oris.space/" class="hover:underline">Oris Lab™</a>. All Rights Reserved.
+            </span>
+            <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
+                <li>
+                    <a href="#" class="mr-4 hover:underline md:mr-6">About</a>
+                </li>
+                <li>
+                    <a href="#" class="mr-4 hover:underline md:mr-6">Privacy Policy</a>
+                </li>
+                <li>
+                    <a href="#" class="mr-4 hover:underline md:mr-6">Cookies Policy</a>
+                </li>
+                <li>
+                    <a href="#" class="hover:underline">Agreement</a>
+                </li>
+            </ul>
+        </footer>
+        -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+        <script>
+            let codeArray = [];
+            new Vue({
+                el: '#app',
+                data: {
+                    codeArray: codeArray,
+                    Number1: 1
+                },
+                methods: {
+                    addCode() {
+                        const newCode = `<div>
+                                        <label for="walletSign" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                                        <input type="email" name="walletSign" id="walletSign" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="example@gmail.com" required="">
+                                        </div>`;
+                        if(this.codeArray.length <= 4) {
+                            this.codeArray.push(newCode);
+                        }
+                        else if(this.codeArray.length > 4) {
+
+                        }
+                    },
+                    deleteCode() {
+                        this.codeArray.pop();
+                    }
+                }
+            })
+        </script><!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    </body>
+</html>

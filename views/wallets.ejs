@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Wallets</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <script src="https://unpkg.com/vue@2.6.14/dist/vue.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+    
+</head>
+    <body id="app">
+        <nav class="bg-gray-800">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="flex h-16 items-center justify-between">
+                    <a href="/" class=" text-white rounded-md">
+                        <img src="/assets/logo1.png" alt="logo" class="h-12 w-12">
+                    </a>
+                    <div class="flex items-center">
+                        <div class="hidden md:block">
+                            
+                        <div class="ml-10 flex items-baseline space-x-4">
+                            
+                            <a href="/create"  class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Create Wallet</a>
+                            <a href="/wallets" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium">Wallets</a>
+                            <a href="/transactions" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Transactions</a>
+                            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Documentory</a>
+                            <a href="/integration" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Integration</a>
+                        </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="button" class=" inline-flex items-center justify-center  overflow-hidden focus:ring-4 w-10 h-10 focus:ring-gray-300 bg-gray-300 rounded-full dark:bg-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                            <span class="sr-only">Open user menu</span>
+                            <span class="font-medium text-gray-600 dark:text-gray-300"><%= user.firstname.charAt(0) + user.lastname.charAt(0)%></span>
+                        </button>
+                    </div>
+                    <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
+                        <div class="px-4 py-3" role="none">
+                            <p class="text-sm text-gray-900 dark:text-white" role="none">
+                                <%= user.firstname + " " + user.lastname%>
+                            </p>
+                            <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
+                                <%= user.email%>
+                            </p>
+                        </div>
+                        <ul class="py-1" role="none">
+                            <li>
+                                <a href="/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Settings</a>
+                            </li>
+                            <li>
+                                <form  action="/logout" method="post" id="sign_out_form"></form>
+                                <a href="#" onclick="onClickLogout()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div> 
+            </div>
+        </nav>
+
+
+        <h1 class="mt-5 text-4xl font-bold mb-10 text-center tracking-tight text-gray-900 sm:text-6xl">Ваши кошельки</h1>
+        <div id="app" class="relative isolate px-6 py-24 lg:px-8">
+            <div class="mx-auto max-w-7xl sm:py-48 lg:py-10 flex flex-col-reverse lg:flex-row items-center justify-center">
+                <div class="relative lg:w-2/3 flex mx-auto items-center justify-center">
+                    <div class="slider relative flex items-center lg:w-2/3 justify-center h-24 rounded">
+                        <% if (wallets.length === 0) { %>
+                            <p class="text-2xl text-gray-400 dark:text-gray-500">У вас нет кошельков</p>
+                        <% } else { %>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <% for (let i = 0; i < wallets.length; i++) { 
+                                    if (wallets[i].addrs != '-') { %>
+                                        <div class="rounded border text-center text-gray-600 text-2xl p-2">
+                                            <p class = "text-center">Имя кошелька: <%= wallets[i].info %></p>
+                                            <p class="flex-col dark:text-gray-500">Адрес: <%= wallets[i].addrs %></p>
+                                        <% for (let j = 0; j < wallets[i].tokens.length; j++) { %>
+                                            <p class="text-center">Баланс: <%= wallets[i].tokens[j].token %> <%= wallets[i].tokens[j].value%> <br> </p>
+                                        <% } %>
+                                        <button  data-modal-target=<%= i %> data-modal-toggle=<%= i %> type="button" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Вывод</button>
+
+                                        <!-- Modal -->
+                                        <div id=<%= i %> tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                            <div class="relative w-full max-w-md max-h-full">
+                                                <!-- Modal content -->
+                                                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                                    <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide=<%= i %>>
+                                                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                                        </svg>
+                                                        <span class="sr-only">Close modal</span>
+                                                    </button>
+                                                    <div class="px-6 py-6 lg:px-8">
+                                                        <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Transaction</h3>
+                                                        <form class="space-y-6 transForm" action="/sendTransaction" id="transForm" method="post">
+                                                            <div>
+                                                                <label for="value" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Summ</label>
+                                                                <input type="number" name="value" id="value" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
+                                                            </div>
+                                                            <div>
+                                                                <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Message</label>
+                                                                <input type="text" name="message" id="message" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
+                                                            </div>
+                                                            <div>
+                                                                <label for="toAddr" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">To Address</label>
+                                                                <input type="text" name="toAddr" id="toAddr" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
+                                                                <p id="errorText" style="color: red; font-size: 70%;"></p>
+                                                            </div>
+                                                            <div class="hidden">
+                                                                <input type="text" name="transToken" id="transToken" value=<%= wallets[i].network %>>
+                                                            </div>
+                                                            <div class="hidden">
+                                                                <input type="text" name="transWalletName" id="transWalletName" value=<%= wallets[i].name %>>
+                                                            </div>
+                                                            <div class="hidden">
+                                                                <input type="text" name="transWalletAddr" id="transWalletAddr" value=<%= wallets[i].addrs %>>
+                                                            </div>
+                                                            <div class="hidden">
+                                                                <input type="text" name="i" id="i" value=<%= i %>>
+                                                            </div>
+                                                            <button type="submit" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Send Transaction</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                        <!-- Modal -->
+                                        </div>
+                                    <% } else { %>
+                                        <div class="rounded border p-2 text-center text-gray-600 text-2xl">
+                                            <p class="mb-1">Ваш кошелек еще не был создан, идет заявка на создание:</p>
+                                            <p class = "text-center">Имя кошелька: <%= wallets[i].info %></p>
+                                            <p class="text-center"><%= wallets[i].myUNID %></p>
+                                        </div>
+                                    <% } 
+                                } %>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+        
+            </div>
+        </div>
+      
+        
+            
+        
+        <!---
+        <footer class="absolute bottom-0 left-0 z-20 w-full p-4 bg-white border-t border-gray-200 shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800 dark:border-gray-600">
+            <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="https://lab.oris.space/" class="hover:underline">Oris Lab™</a>. All Rights Reserved.
+            </span>
+            <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
+                <li>
+                    <a href="#" class="mr-4 hover:underline md:mr-6">About</a>
+                </li>
+                <li>
+                    <a href="#" class="mr-4 hover:underline md:mr-6">Privacy Policy</a>
+                </li>
+                <li>
+                    <a href="#" class="mr-4 hover:underline md:mr-6">Cookies Policy</a>
+                </li>
+                <li>
+                    <a href="#" class="hover:underline">Agreement</a>
+                </li>
+            </ul>
+        </footer>
+        -->
+        <script>
+            console.log(wallets)
+            new Vue({
+                el: '#app',
+                data: {
+                    wallets: wallets,
+                    index: 0
+                },
+                methods: {
+                    nextSlide() {
+                        this.index += 1;
+                    },
+                    prev() {
+                        this.index -=1;
+                    }
+                }
+            })
+        
+            function onClickLogout() {
+                document.getElementById("sign_out_form").submit()
+            }
+        </script>
+
+        <script>
+            // Получите все элементы с классом "transForm" и добавьте обработчик к каждой форме
+            // Получите все элементы с классом "transForm" и добавьте обработчик к каждой форме
+            const forms = document.querySelectorAll('.transForm');
+
+            forms.forEach(form => {
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+
+                    const inputValue = String(this.querySelector('[name="toAddr"]').value);
+                    const address = String(this.querySelector('[name="transWalletAddr"]').value);
+                    const transToken = String(this.querySelector('[name="transToken"]').value);
+                    // console.log(inputValue.substring(0, 2));
+                    // console.log(address);
+                    // console.log(transToken);
+
+                    const errorText = this.querySelector('#errorText');
+
+                    if (inputValue === address) {
+                        // console.log(1)
+                        errorText.textContent = 'Не корректный адрес получателя!';
+                    } else if (((inputValue.length == 42) && (inputValue.substring(0, 2) === '0x') && (transToken.substring(0, 2) === '30')) || ((inputValue.length == 34) && (inputValue.substring(0, 1) === 'T') && (transToken.substring(0, 2) === '50')) || ((inputValue.length > 25 && inputValue.length < 36) && ((inputValue.substring(0, 1) === '1') || (inputValue.substring(0, 1) === '3') || (inputValue.substring(0, 3) === 'bc1')) && (transToken.substring(0, 2) === '10'))) {
+                        // console.log(2)
+                        errorText.textContent = '';
+                        this.method = 'post';
+                        this.action = '/sendTransaction';
+                        this.submit();
+                    } else {
+                        // console.log(3)
+                        errorText.textContent = 'Не корректный адрес получателя!';
+                    }
+                });
+            });
+
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+    </body>
+</html>

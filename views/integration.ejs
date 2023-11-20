@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Integration</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+    <script src="https://unpkg.com/vue@2.6.14/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body class="min-h-screen bg-gray-100">
+    <nav class="bg-gray-800">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex h-16 items-center justify-between">
+                <a href="/" class=" text-white rounded-md">
+                    <img src="/assets/logo1.png" alt="logo" class="h-12 w-12">
+                </a>
+                <div class="flex items-center">
+                    <div class="hidden md:block">
+                        
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        
+                        <a href="/create"  class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Create Wallet</a>
+                        <a href="/wallets" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Wallets</a>
+                        <a href="/transactions" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Transactions</a>
+                        <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Documentory</a>
+                        <a href="/integration" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" >Integration</a>
+                    </div>
+                    </div>
+                </div>
+                <div>
+                    <button type="button" class=" inline-flex items-center justify-center  overflow-hidden focus:ring-4 w-10 h-10 focus:ring-gray-300 bg-gray-300 rounded-full dark:bg-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                        <span class="sr-only">Open user menu</span>
+                        <span class="font-medium text-gray-600 dark:text-gray-300"><%= user.firstname.charAt(0) + user.lastname.charAt(0)%></span>
+                    </button>
+                </div>
+                <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
+                    <div class="px-4 py-3" role="none">
+                        <p class="text-sm text-gray-900 dark:text-white" role="none">
+                            <%= user.firstname + " " + user.lastname%>
+                        </p>
+                        <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
+                            <%= user.email%>
+                        </p>
+                    </div>
+                    <ul class="py-1" role="none">
+                        <li>
+                            <a href="/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Settings</a>
+                        </li>
+                        <li>
+                            <form  action="/logout" method="post" id="sign_out_form"></form>
+                            <a href="#" onclick="onClickLogout()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</a>
+                        </li>
+                    </ul>
+                </div>
+            </div> 
+        </div>
+    </nav>
+   
+
+    <div id="app">
+        <div class=" flex flex-col min-h-screen">
+            <h1 class="mt-5 text-4xl font-bold mb-4 text-center tracking-tight text-gray-900 sm:text-6xl">Интеграции</h1>
+                <div class="mt-6">
+                    <div class="flex justify-center pb-6">
+                        <button id="defaultModalButton" data-modal-toggle="defaultModal" class="flex w-full sm:w-auto rounded-md bg-gray-800 hover:bg-gray-600 px-3 py-1.5 text-base font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                            Add Integration
+                        </button>
+                    </div>
+                    <div class="p-6 sm:p-6">
+                        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+                            <div class="mx-auto grid max-w-3xl grid-cols-1 gap-1 lg:max-w-none lg:grid-cols-2">
+                                <integrations-card v-for="integration in integrations" :key="integration.id" :integration="integration"></integrations-card>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <div id="defaultModal" tabindex="-1" aria-hidden="true" class="hidden overflow-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full inset-0 h-modal h-full">
+                <div class="relative p-4 w-full max-w-2xl h-auto">
+                    <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+                        <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                                Add Product
+                            </h3>
+                            <button type="button" id="defaultModal-close" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="defaultModal">
+                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                <span class="sr-only">Close modal</span>
+                            </button>
+                        </div>
+
+                        <form @submit.prevent="addIntegration">
+                            <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                                <div>
+                                    <label for="projectname" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                                    <input type="text" v-model="projectname" id="projectname" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type integration project name" required>
+                                </div>
+                                <div>
+                                    <label for="domain" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Domain</label>
+                                    <input type="text" v-model="domain" id="domain" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Integration website domain" required>
+                                </div>
+                                <div>
+                                    <label for="webhook" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Webhook Address</label>
+                                    <input type="text" v-model="webhook" id="webhook" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Webhook for Integration" required>
+                                </div>
+                                <div></div>
+                                <div>
+                                    <label for="network" v-model="network_1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Networks for payment</label>
+                                    <div class="flex items-center mb-4">
+                                        <input id="network_1" v-model="network_1" type="checkbox" value="3010" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="network_1" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">TRX, USDT</label>
+                                    </div>
+                                  
+                                    <div class="flex items-center mb-4">
+                                        <input id="network_2" v-model="network_2" type="checkbox" value="3010" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="network_2" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">ETH, USDT</label>
+                                    </div>
+
+                                    <div class="flex items-center mb-4">
+                                        <input id="network_3" v-model="network_3" type="checkbox" value="1010" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="network_3" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">BTC, USDT</label>
+                                    </div>
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                                    <textarea id="description" v-model="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Write product description here"></textarea>
+                                </div>
+                            </div>
+                            <button v-if="!loading" type="submit" class="flex w-full sm:w-auto rounded-md bg-gray-800 hover:bg-gray-600 px-3 py-1.5 text-base font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                                Add Integration
+                            </button>
+                            <button v-else disabled type="button" class="text-white inline-flex items-center bg-blue-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                                <svg aria-hidden="true" role="status" class="inline mr-3 -ml-1 w-6 h-6 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+                                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+                                </svg>
+                                Loading...
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        Vue.component('integrations-card', {
+            props: ['integration'],
+            template: `
+          <article class="flex max-w-xl flex-col items-start justify-between bg-white rounded-md mb-2 p-6">
+            <div class="flex items-center gap-x-4 text-xs">
+              <time :datetime="integration.createdAt" class="text-gray-500">{{ formatDate(integration.createdAt) }}</time>
+              <a class="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">Integration</a>
+            </div>
+            <div class="group relative">
+              <h3 class="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
+                <a :href="'/integration/' + integration.id">
+                  <span class="absolute inset-0"></span>
+                  {{ integration.name }}
+                </a>
+              </h3>
+              <p class="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">{{ integration.description }}</p>
+            </div>
+          </article>
+        `,
+            methods: {
+                formatDate(dateString) {
+                    const dt = new Date(dateString)
+                    return dt.toLocaleString('ru-RU', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit'
+                    })
+                }
+            }
+        })
+        new Vue({
+            el: '#app',
+            data: {
+                projectname: '',
+                domain: '',
+                webhook: '',
+                description: '',
+                network_1: '',
+                network_2: '',
+                network_3: '',
+                integrations: JSON.parse('<%- JSON.stringify(integrations) %>'),
+                loading: false
+            },
+            methods: {
+                addIntegration() {
+                    this.loading = true
+                    axios.post('/add_integration', {
+                        projectname: this.projectname,
+                        domain: this.domain,
+                        webhook: this.webhook,
+                        description: this.description,
+                        network_1: this.network_1,
+                        network_2: this.network_2,
+                        network_3: this.network_3
+                    })
+                        .then(response => {
+                            const addedIntegration = response.data
+
+                            this.integrations.push(addedIntegration)
+
+                            this.projectname = ''
+                            this.domain = ''
+                            this.webhook = ''
+                            this.description = ''
+                            this.network_1 = ''
+                            this.network_2 = ''
+                            this.network_3 = ''
+
+                            const modalClose = document.getElementById('defaultModal-close');
+                            modalClose.click()
+                        })
+                        .catch(error => {
+                            console.error('Error adding integration:', error)
+                        })
+                }
+
+            }
+        })
+
+        function onClickLogout() {
+            document.getElementById("sign_out_form").submit()
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+</body>
+</html>
